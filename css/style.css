@@ -1,0 +1,1269 @@
+/* ========================================= */
+/* 0. Global Resets & Variables              */
+/* ========================================= */
+
+*, *::before, *::after {
+    box-sizing: border-box; /* Include padding and border in element's total width/height */
+    margin: 0;    /* Reset default margins for consistency */         
+    padding: 0;   /* Reset default paddings for consistency */          
+}
+
+:root {
+    /* Netflix-inspired Color Palette */
+    --netflix-red: #E50914;      /* Primary accent color for buttons, highlights */
+    --netflix-dark: #141414;     /* Deep dark background for main sections */
+    --netflix-light-dark: #222222; /* Slightly lighter dark for alternating sections */
+    --netflix-text-light: #F3F3F3; /* Light gray for main text on dark backgrounds */
+    --netflix-text-mid: #737373;   /* Mid-gray for secondary text, placeholder text */
+    --netflix-gray-border: #444; /* Border color for inputs, FAQ */
+    --netflix-gradient-dark: rgba(0,0,0,0.8); /* For gradients, dark end */
+    --netflix-gradient-light: rgba(0,0,0,0.1); /* For gradients, light end */
+    --spacing-unit: 1rem; /* Base for responsive spacing */
+}
+
+/* Base Body Styles */
+body {
+    font-family: 'Roboto', sans-serif; /* Clean, readable body font */
+    background-color: var(--netflix-dark);
+    color: var(--netflix-text-light);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased; /* Smoother text rendering for WebKit */
+    -moz-osx-font-smoothing: grayscale; /* Smoother text rendering for Firefox */
+    overflow-x: hidden; /* Prevent horizontal scroll due to potential layout shifts */
+
+}
+
+/* Global Heading Styles */
+h1, h2, h3, h4 {
+    font-family: 'Bebas Neue', sans-serif; /* Bold, impactful font for headlines */
+    color: var(--netflix-text-light);
+    line-height: 1.1;
+    margin-bottom: 0.8em;
+    text-transform: uppercase; /* Match Netflix style */
+
+}
+
+h1 { font-size: 3.5rem; }
+h2 { font-size: 2.5rem; }
+h3 { font-size: 1.8rem; }
+
+p {
+    margin-bottom: 1em;
+    font-size: 1.1rem;
+}
+
+a {
+    text-decoration: none;
+    color: var(--netflix-text-light);
+    transition: color 0.3s ease; /* Smooth color change for links */
+}
+
+a:hover {
+    color: var(--netflix-red); /* Highlight links with red on hover */
+}
+
+/* Generic Button Styling */
+
+.btn {
+    display: inline-block; /* Allows padding and alignment */
+    padding: 0.8rem 1.5rem;
+    border-radius: 4px; /* Slightly rounded corners */
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.btn-primary {
+    background-color: var(--netflix-red);
+    color: var(--netflix-text-light);
+}
+
+.btn-primary:hover {
+    background-color: #f40612; /* Slightly brighter red on hover */
+    transform: translateY(-1px); /* Subtle lift */
+    box-shadow: 0 4px 10px rgba(229, 9, 20, 0.4); /* Red shadow */
+}
+
+.btn-hero {
+    background-color: var(--netflix-red);
+    color: var(--netflix-text-light);
+    padding: 1rem 2rem; /* Larger padding for hero button */
+    font-size: 1.5rem;
+    border-radius: 4px;
+    display: inline-flex; /* Use flex to align text and icon */
+    align-items: center;
+    gap: 10px; /* Space between text and arrow icon */
+}
+
+.btn-hero:hover {
+    background-color: #f40612;
+    transform: scale(1.02); /* Slight scale for hero button on hover */
+    box-shadow: 0 6px 15px rgba(229, 9, 20, 0.5);
+}
+
+/* Separator line between major sections */
+.seperator-line {
+    border-bottom: 8px solid var(--netflix-dark); /*Thick dark line */
+
+}
+
+/* ========================================= */
+/* 1. Header & Navigation Styling            */
+/* ========================================= */
+
+.main-header {
+    background-color: transparent; /* Initially transparent to blend with hero */
+    padding: 1.5rem 4%; /* Responsive horizontal padding */
+    position: absolute; /* Positioned over the hero background */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100; /* Ensures header is on top of hero content */
+    display: flex;
+    justify-content: center; /* Centers the header-content max-width */
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between; /* Pushes logo to left, nav to right */
+    align-items: center;
+    width: 100%;
+    max-width: 1920px; /* Max width for inner content, aligns with main content */
+}
+
+.logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.5rem;
+    color: var(--netflix-red);
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5); /* Subtle shadow for depth */
+    font-weight: bold;
+    letter-spacing: 2px; /* Spread out letters */ 
+}
+ 
+.header-nav {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem; /* Space between language selector and sign in button */
+}
+
+/* CSS-ONLY Language Dropdown */
+.language-selector {
+    position: relative; /* Context for dropdown options */
+    user-select: none; /* Prevent text selection when clicking label */
+}
+
+.lang-display {
+    background-color: rgba(0,0,0,0.6); /* Semi-transparent background */
+    border: 1px solid var(--netflix-gray-border);
+    color: var(--netflix-text-light);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; /* Space between icon/text/arrow */
+    transition: background-color 0.3s ease;
+}
+
+.lang-display:hover {
+    background-color: rgba(0,0,0,0.8); /* Darker on hover */
+}
+
+.lang-display .fa-chevron-down {
+    transition: transform 0.3s ease; /* Smooth rotation for arrow */
+}
+
+.lang-options {
+    position: absolute;
+    top: calc(100% + 5px); /* Position directly below the display button */
+    left: 0;
+    background-color: rgba(0,0,0,0.8); /* Darker background for options */
+    border: 1px solid var(--netflix-gray-border);
+    border-radius: 4px;
+    min-width: 150px; /* Ensure sufficient width for options */
+    list-style: none;
+    opacity: 0; /* Hidden by default */
+    visibility: hidden; /* Hide from screen readers */
+    pointer-events: none; /* Don't block clicks when hidden */
+    transform: translateY(-10px); /* Slight initial offset for animation */
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+    z-index: 101; /* Ensure dropdown is above other header elements */
+}
+
+.lang-options li a {
+    display: block; /* Make the entire list item clickable */
+    padding: 0.8rem 1rem;
+    color: var(--netflix-text-light);
+    transition: background-color 0.2s ease;
+}
+
+.lang-options li a:hover {
+    background-color: rgba(255,255,255,0.1); /* Subtle highlight on hover */
+    color: var(--netflix-text-light); /* Keep text color same */
+}
+
+/* Show dropdown and rotate arrow when checkbox is checked */
+#lang-toggle:checked + .lang-display .fa-chevron-down {
+    transform: rotate(180deg); /* Rotate arrow to point up */
+}
+
+#lang-toggle:checked ~ .lang-options {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto; /* Allow interaction */
+    transform: translateY(0); /* Slide into view */
+}
+
+/* ========================================= */
+/* 2. Hero Section Styling                   */
+/* ========================================= */
+.hero-section {
+    position: relative;
+    width: 100%;
+    height: 100vh; /* Full viewport height for hero */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    overflow: hidden; /* Clip background if it moves or scales */
+}
+
+.hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* Ensures image/video doesn't bleed if scaled */
+    z-index: 1; /* Below content and gradient */
+}
+
+.hero-bg-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Cover the entire area, cropping if necessary */
+    filter: brightness(60%) contrast(120%); /* Enhance cinematic look, darken image */
+    transform: scale(1.05); /* Slight initial zoom to avoid black bars on edges */
+    animation: zoomOut 20s infinite alternate ease-in-out; /* Subtle, slow zoom animation */
+}
+
+@keyframes zoomOut {
+    from { transform: scale(1.05); }
+    to { transform: scale(1); }
+}
+
+.hero-gradient-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Gradient from dark at bottom, transparent in middle, dark at top */
+    background: linear-gradient(to top, var(--netflix-dark) 0%, transparent 50%, var(--netflix-dark) 100%);
+    z-index: 2; /* Between background and content */
+}
+
+.hero-content {
+    position: relative;
+    z-index: 3; /* Above gradient and background */
+    max-width: 950px;
+    padding: 0 3%; /* Horizontal padding for smaller screens */
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.7); /* Text shadow for readability on busy backgrounds */
+}
+
+.hero-content h1 {
+    font-size: 4.5rem;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+}
+
+.hero-content h3 {
+    font-size: 2.2rem;
+    font-weight: 400; /* Lighter weight for sub-headline */
+    margin-bottom: 1.5rem;
+}
+
+.hero-content p {
+    font-size: 1.3rem;
+    font-weight: 300;
+    margin-bottom: 2rem;
+}
+
+.email-signup {
+    display: flex;
+    justify-content: center; /* Center the input and button */
+    gap: 10px; /* Space between input and button */
+    max-width: 700px;
+    margin: 0 auto; /* Center the container */
+    flex-wrap: wrap; /* Allow wrapping on small screens */
+}
+
+.email-signup input[type="email"] {
+    flex: 1; /* Allow input to grow and take available space */
+    min-width: 250px; /* Minimum width for the email input */
+    padding: 1rem 1.2rem;
+    border: 1px solid var(--netflix-gray-border);
+    border-radius: 4px;
+    background-color: rgba(0,0,0,0.5); /* Semi-transparent background */
+    color: var(--netflix-text-light);
+    font-size: 1.1rem;
+    transition: border-color 0.3s ease;
+}
+
+.email-signup input[type="email"]::placeholder {
+    color: var(--netflix-text-mid); /* Muted placeholder color */
+}
+
+.email-signup input[type="email"]:focus {
+    outline: none;
+    border-color: var(--netflix-red); /* Highlight border on focus */
+}
+
+/* ========================================= */
+/* 3. Feature Sections Styling (Flexbox)     */
+/* ========================================= */
+
+main {
+    background-color: var(--netflix-dark); /* Ensure consistency for main content area */
+}
+
+.feature-section {
+    display: flex;
+    flex-direction: row; /* Default layout: content on left, media on right */
+    align-items: center; /* Vertically align items in the center */
+    justify-content: center;
+    padding: 4rem 4%; /* Ample padding for sections */
+    gap: 3rem; /* Space between content and media */
+    max-width: 1920px; /* Align with header and footer content */
+    margin: 0 auto;
+}
+
+.feature-section.reverse-layout {
+    flex-direction: row-reverse; /* Reverse order for alternating sections */
+}
+
+.feature-content {
+    flex: 1; /* Allows content to grow and shrink */
+    min-width: 300px; /* Prevent content from shrinking too much */
+    text-align: left;
+}
+
+.feature-content h2 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.feature-content p {
+    font-size: 1.5rem;
+}
+
+.feature-media {
+    flex: 1; /* Allows media to grow and shrink */
+    min-width: 300px;
+    position: relative; /* For any internal media overlays/animations */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.feature-media img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* ========================================= */
+/* 4. Movie/Show Row Styling (Horizontal Scroll) */
+/* ========================================= */
+
+.movie-row-section {
+    padding: 3rem 4%;
+    background-color: var(--netflix-dark);    
+}
+
+.movie-row-section h2 {
+    font-size: 2.2rem;
+    margin-bottom: 1.5rem;
+    text-align: left; /* Title aligns to the left */
+    max-width: 1920px; /* Align with other main content */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.movie-cards-container {
+    display: flex; /* Arrange movie cards in a horizontal row */
+    flex-direction: row;
+    flex-wrap: wrap; 
+    overflow-x: auto; /* Enable horizontal scrolling when content overflows */
+    padding-bottom: 1rem; /* Space for the scrollbar on the bottom */
+    gap: 15px; /* Space between movie cards */
+    -webkit-overflow-scrolling: touch; /* Improves scrolling performance on iOS devices */
+    /* Custom Scrollbar Styling (Firefox) */
+    scrollbar-width: thin;
+    scrollbar-color: var(--netflix-red) var(--netflix-light-dark); /* Thumb color, Track color */
+    /* Custom Scrollbar Styling (Webkit - Chrome, Safari, Edge) */
+    &::-webkit-scrollbar {
+        height: 8px; /* Height of horizontal scrollbar */
+    }
+    &::-webkit-scrollbar-track {
+        background: var(--netflix-light-dark);
+        border-radius: 10px;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: var(--netflix-red);
+        border-radius: 10px;
+    }
+    &::-webkit-scrollbar-thumb:hover {
+        background: #f40612; /* Darker red on hover */
+    }
+}
+
+.movie-card {
+    flex-shrink: 0; /* Prevents cards from shrinking when there's not enough space */
+    width: 200px; /* Fixed width for movie cards */
+    height: 300px; /* Fixed height for consistent look */
+    position: relative;  /* Context for card-overlay */
+    overflow: hidden; /* Ensures image and overlay respect border-radius */
+    border-radius: 4px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effects */
+    cursor: pointer;
+}
+
+.movie-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Cover the entire card area, cropping as needed */
+    display: block;
+}
+
+.card-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8); /* Dark semi-transparent overlay */
+    display: flex;
+    flex-direction: column; /* Stack content vertically */
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    opacity: 0; /* Hidden by default */
+    transition: opacity 0.3s ease; /* Smooth fade in */
+    padding: 15px;
+}
+
+.movie-card:hover {
+    transform: scale(1.05); /* Slight enlarge on hover */
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5); /* More prominent shadow */
+    z-index: 5; /* Bring hovered card to front of its siblings */
+}
+
+.movie-card:hover .card-overlay {
+    opacity: 1; /* Show overlay on hover */
+}
+
+.play-icon {
+    font-size: 3rem;
+    color: var(--netflix-red);
+    margin-bottom: 10px;
+    transition: transform 0.2s ease; /* Smooth scale for icon */
+}
+
+.movie-card:hover .play-icon {
+    transform: scale(1.1); /* Enlarge play icon on hover */
+}
+
+.card-overlay h4 {
+    font-size: 1.3rem;
+    color: var(--netflix-text-light);
+    margin-bottom: 5px;
+}
+
+.card-overlay p {
+    font-size: 0.9rem;
+    color: var(--netflix-text-mid);
+    margin-bottom: 0;
+}
+
+/* ========================================= */
+/* 5. FAQ Section (Accordion with Checkbox Hack) */
+/* ========================================= */
+
+.faq-section {
+    padding: 4rem 4%;
+    background-color: var(--netflix-light-dark); /* Slightly lighter dark background */
+    text-align: center;
+}
+
+.faq-section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+}
+
+.faq-accordion {
+    max-width: 800px;
+    margin: 0 auto; /* Center the accordion */
+    border-radius: 4px;
+    overflow: hidden; /* Ensure rounded corners are applied */
+}
+
+.faq-item {
+    margin-bottom: 10px; /* Space between FAQ items */
+}
+
+.faq-item:last-child {
+    margin-bottom: 0; /* No margin after the last item */
+}
+
+/* Hide Checkbox */
+.faq-toggle {
+    display: none;
+}
+
+.faq-question {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--netflix-gray-border); /* Dark gray background for question bar */
+    padding: 1.2rem 1.8rem;
+    font-size: 1.5rem;
+    font-weight: 400;
+    cursor: pointer;
+    color: var(--netflix-text-light);
+    transition: background-color 0.3s ease; /* Smooth background change on hover */
+}
+
+.faq-question:hover {
+    background-color: #555; /* Darker on hover */
+}
+
+.faq-question .fa-plus {
+    font-size: 1.5rem;
+    transition: transform 0.3s ease; /* Smooth rotation for the plus icon */
+}
+
+.faq-answer {
+    background-color: var(--netflix-gray-border); /* Same background as question bar */
+    text-align: left;
+    max-height: 0; /* Initially hidden by setting max-height to 0 */
+    overflow: hidden; /* Hide content that overflows */
+    opacity: 0; /* Also fade out */
+    transition: max-height 0.5s ease-out, opacity 0.5s ease-out; /* Smooth transition for height and opacity */
+    padding: 0 1.8rem; /* Padding when open */
+}
+
+.faq-answer p {
+    padding: 1rem 0; /* Vertical padding for paragraphs within answer */
+    font-size: 1.1rem;
+    color: var(--netflix-text-light);
+}
+
+.faq-answer p:first-child {
+    padding-top: 1.8rem; /* Extra top padding for the first paragraph */
+}
+
+.faq-answer p:last-child {
+    padding-bottom: 1.8rem; /* Extra bottom padding for the last paragraph */
+}
+
+/* Show answer and rotate icon when checkbox is checked */
+.faq-toggle:checked + .faq-question .fa-plus {
+    transform: rotate(45deg); /* Rotate plus icon to become an X */
+}
+
+.faq-toggle:checked ~ .faq-answer {
+    max-height: 500px; /* Set a sufficiently large max-height to reveal content */
+    opacity: 1; /* Fade in */
+    transition: max-height 0.7s ease-in, opacity 0.7s ease-in; /* Longer transition when expanding */
+}
+
+/* ========================================= */
+/* 6. Footer Styling                         */
+/* ========================================= */
+
+.main-footer {
+    background-color: var(--netflix-dark);
+    padding: 4rem 4%;
+    color: var(--netflix-text-mid);
+    text-align: left;
+}
+
+.footer-content {
+    max-width: 1000px; /* Max width for inner content */
+    margin: 0 auto; /* Center the footer content */
+}
+
+.footer-question {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+}
+
+.footer-links {
+    display: grid;
+    /* Responsive grid: auto-fit creates columns, minmax ensures min width */
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px; /* Space between links */
+    list-style: none;
+    margin-bottom: 2rem;
+}
+
+.footer-links li a {
+    font-size: 0.9rem;
+    color: var(--netflix-text-mid); /* Muted color for footer links */
+}
+
+.footer-links li a:hover {
+    text-decoration: underline; /* Underline on hover */
+    color: var(--netflix-text-mid); /*Keep color same*/
+
+}
+
+/* Adjust footer language selector - Reuses header's language-selector styles */
+.language-selector.footer-lang {
+    margin-top: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.language-selector.footer-lang .lang-display {
+    background-color: var(--netflix-dark); /* Darker background than header for footer context */
+}
+
+.copyright {
+    font-size: 0.8rem;
+    color: var(--netflix-text-mid);
+}
+
+/* ========================================= */
+/* 7. Pure CSS Login/Signup Modal            */
+/* ========================================= */
+
+
+/* Full-screen overlay for the modal */
+.modal-overlay {
+    position: fixed; /* Fixed to the viewport */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85); /* Very dark, semi-transparent background */
+    display: flex;
+    justify-content: center; /* Center modal horizontally */
+    align-items: center; /* Center modal vertically */
+    opacity: 0; /* Hidden by default */
+    visibility: hidden; /* Ensures it's not clickable/readable when hidden */
+    pointer-events: none; /* Allows clicks to pass through when hidden */
+    transition: opacity 0.4s ease, visibility 0.4s ease; /* Smooth fade in/out */
+    z-index: 1000; /* Ensure it's on top of all other content */
+}
+
+/* Show modal when its ID is targeted in the URL hash (e.g., #login-modal) */
+.modal-overlay:target {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto; /* Allow interaction when visible */
+}
+
+.modal-dialog {
+    background-color: var(--netflix-dark); /* Dark background for modal itself */
+    padding: 3rem;
+    border-radius: 8px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.8); /* Strong shadow for modal depth */
+    max-width: 450px;
+    width: 90%; /* Responsive width */
+    position: relative; /* Context for close button */
+    transform: translateY(30px); /* Initial offset for entry animation */
+    transition: transform 0.4s ease-out, opacity 0.4s ease-out; /* Smooth slide and fade */
+    opacity: 0;
+}
+
+/* Animate modal entry when its parent overlay is targeted */
+.modal-overlay:target .modal-dialog {
+    transform: translateY(0); /* Slide into view */
+    opacity: 1;
+}
+
+.modal-close-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 2.5rem;
+    color: var(--netflix-text-mid); /* Muted color for close button */
+    text-decoration: none;
+    line-height: 1;
+    transition: transform 0.2s ease, color 0.3s ease; /* Smooth rotation and color change */
+    z-index: 1001; /* Ensure close button is on top */
+}
+
+.modal-close-btn:hover {
+    transform: rotate(90deg); /* Rotate on hover */
+    color: var(--netflix-text-light); /* Lighter color on hover */
+}
+
+.modal-content-wrapper {
+    /* This wraps both login and signup forms */
+    position: relative;
+    overflow: hidden; /* Important for preventing overflow if forms slide */
+    min-height: 350px; /* Ensure modal has a minimum height to avoid jumping */
+}
+
+/* Hide the actual radio buttons for login/signup toggle */
+.modal-dialog input[type="radio"] {
+    display: none;
+}
+
+.auth-toggle-buttons {
+    display: flex;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--netflix-gray-border); /* Separator line below toggles */
+}
+
+.auth-toggle-btn {
+    flex: 1; /* Distribute space evenly among toggle buttons */
+    text-align: center;
+    padding: 0.8rem;
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: var(--netflix-text-mid);
+    transition: color 0.3s ease;
+    position: relative; /* For the active bottom line */
+}
+
+.auth-toggle-btn:hover {
+    color: var(--netflix-text-light); /* Lighter on hover */
+}
+
+.auth-toggle-btn::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; /* Position slightly overlapping the border */
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: var(--netflix-red);
+    transform: scaleX(0); /* Hidden by default (zero width) */
+    transition: transform 0.3s ease; /* Smooth width expansion */
+}
+
+/* Active state for toggle buttons (using radio hack) */
+#login-radio:checked + .auth-toggle-buttons label[for="login-radio"],
+#signup-radio:checked + .auth-toggle-buttons label[for="signup-radio"] {
+    color: var(--netflix-text-light);
+}
+
+#login-radio:checked + .auth-toggle-buttons label[for="login-radio"]::after,
+#signup-radio:checked + .auth-toggle-buttons label[for="signup-radio"]::after {
+    transform: scaleX(1); /* Expand to full width when active */
+}
+
+/* Auth Forms Container */
+.auth-form {
+    transition: opacity 0.5s ease; /* Smooth fade for forms */
+    opacity: 0; /* Hidden by default */
+    pointer-events: none; /* Don't block clicks when hidden */
+    position: absolute; /* Stack forms on top of each other */
+    width: 100%;
+    top: 0;
+    left: 0;
+}
+
+/* Show the correct form based on radio button state */
+/* When login-radio is checked, make login-form visible */
+#login-radio:checked ~ .login-form {
+    opacity: 1;
+    pointer-events: auto;
+    position: relative; /* Make it take up space in the flow when active */
+    top: auto;
+    left: auto; /* Reset absolute positioning */
+}
+
+/* When signup-radio is checked, make signup-form visible */
+#signup-radio:checked ~ .signup-form {
+    opacity: 1;
+    pointer-events: auto;
+    position: relative; /* Make it take up space in the flow when active */
+    top: auto; left: auto; /* Reset absolute positioning */
+}
+
+.auth-form h2 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.auth-form input {
+    width: 100%;
+    padding: 1rem 1.2rem;
+    margin-bottom: 1rem;
+    background-color: var(--netflix-gray-border); /* Dark background for inputs */
+    border: none;
+    border-radius: 4px;
+    color: var(--netflix-text-light);
+    font-size: 1.1rem;
+}
+
+.auth-form input::placeholder {
+    color: var(--netflix-text-mid);
+}
+
+.auth-form input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--netflix-red); /* Red glow on focus */
+}
+
+.btn-auth-submit {
+    width: 100%;
+    background-color: var(--netflix-red);
+    color: var(--netflix-text-light);
+    padding: 1rem;
+    font-size: 1.2rem;
+    margin-top: 1rem;
+    border-radius: 4px;
+}
+
+.btn-auth-submit:hover {
+    background-color: #f40612;
+    transform: none; /* No scaling for this button */
+    box-shadow: none;
+}
+
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+    color: var(--netflix-text-mid);
+    margin-top: 0.5rem;
+}
+
+/* Custom Checkbox Styling (Remember me) */
+.checkbox-container {
+    display: block;
+    position: relative;
+    padding-left: 25px; /* Space for custom checkbox */
+    cursor: pointer;
+    font-size: 0.9em;
+    user-select: none; /* Prevent text selection */
+}
+
+.checkbox-container input {
+    position: absolute;
+    opacity: 0; /* Hide default checkbox */
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 18px;
+    width: 18px;
+    background-color: var(--netflix-gray-border); /* Background of unchecked checkbox */
+    border-radius: 2px;
+}
+
+.checkbox-container:hover input ~ .checkmark {
+    background-color: #555; /* Darker on hover */
+}
+
+.checkbox-container input:checked ~ .checkmark {
+    background-color: var(--netflix-red); /* Red when checked */
+}
+
+.checkmark::after {
+    content: "";
+    position: absolute;
+    display: none; /* Hidden by default */
+    left: 6px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg); /* Creates the checkmark shape */
+}
+
+.checkbox-container input:checked ~ .checkmark::after {
+    display: block; /* Show checkmark when input is checked */
+}
+
+.help-link {
+    color: var(--netflix-text-mid);
+}
+
+
+.help-link:hover {
+    text-decoration: underline;
+    color: var(--netflix-text-mid);
+}
+
+.signup-text, .login-text {
+    font-size: 1.1rem;
+    color: var(--netflix-text-mid);
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.signup-text .switch-auth, .login-text .switch-auth {
+    color: var(--netflix-text-light); /* Brighter for emphasis */
+    font-weight: bold;
+}
+
+.signup-text .switch-auth:hover, .login-text .switch-auth:hover {
+    text-decoration: underline;
+}
+
+/* Advanced CSS-only multi-step modal logic:
+ This uses a combination of :target (for the modal itself)
+ and #modal-id#radio-id:target (for the internal forms)
+ to ensure that even when deep-linked, the correct form is shown.
+ The 'radio:target' part is crucial here.
+*/
+
+#login-modal:target #signup-radio:target ~ .modal-content-wrapper .auth-form.login-form {
+    opacity: 0;
+    pointer-events: none;
+    position: absolute; /* Hide and collapse it back */
+}
+
+#login-modal:target #signup-radio:target ~ .modal-content-wrapper .auth-form.signup-form {
+    opacity: 1;
+    pointer-events: auto;
+    position: relative; /* Show this one */
+}
+
+/* This is a fallback / ensure correct state if modal is opened on login or signup 
+radio is targeted while the modal is open */
+
+#login-modal:target #login-radio:checked ~ .modal-content-wrapper .authform.signup-form {
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+}
+
+#login-modal:target #login-radio:checked ~ .modal-content-wrapper .auth-form.loginform {
+    opacity: 1;
+    pointer-events: auto;
+    position: relative;
+}
+
+/* Ensure the correct toggle button is active for deep links/radio changes */
+#login-modal:target #signup-radio:checked ~ .auth-toggle-buttons label[for="login-radio"]::after {
+ transform: scaleX(0);
+}
+
+#login-modal:target #signup-radio:checked ~ .auth-toggle-buttons label[for="signup-radio"]::after {
+    transform: scaleX(1);
+}
+
+#login-modal:target #login-radio:checked ~ .auth-toggle-buttons label[for="signup-radio"]::after {
+    transform: scaleX(0);
+}
+
+#login-modal:target #login-radio:checked ~ .auth-toggle-buttons label[for="login-radio"]::after {
+    transform: scaleX(1);
+}
+
+/* ========================================= */
+/* 8. Responsive Design Media Queries        */
+/* ========================================= */
+
+/* Tablet and Smaller Desktop (max-width: 992px) */
+
+@media (max-width: 992px) {
+    h1 { font-size: 3.5rem; }
+    h2 { font-size: 2.2rem; }
+    h3 { font-size: 1.6rem; }
+    p { font-size: 1rem; }
+
+    .main-header {
+        padding: 1.5rem 3%; /* Adjusted padding */
+    }
+
+    .logo {
+        font-size: 2rem;
+    }
+
+    .hero-section {
+        height: 80vh; /* Shorter hero section on tablets */
+    }
+
+    .hero-content {
+        max-width: 80%; /* Wider content area */
+    }
+
+    .hero-content h1 {
+        font-size: 3.5rem;
+    }
+
+    .hero-content h3 {
+        font-size: 1.8rem;
+    }
+
+    .hero-content p {
+        font-size: 1.1rem;
+    }
+
+    .email-signup {
+        flex-direction: column; /* Stack input and button vertically */
+        align-items: center;
+    }
+
+    .email-signup input[type="email"] {
+        width: 400px; /* Constrain max width for input */
+    }
+
+    .btn-hero {
+        width: fit-content; /* Allow button to size to its content */
+        font-size: 1.2rem;
+        padding: 0.8rem 1.5rem;
+        margin-top: 15px; /* Space between stacked input and button */
+    }
+
+    .feature-section {
+        flex-direction: column; /* Stack content and media vertically */
+        text-align: center;
+        padding: 3rem 3%;
+        gap: 2rem; /* Reduce gap */
+    }
+
+    .feature-section.reverse-layout {
+        flex-direction: column; /* Keep stacked on reverse layouts too */
+    }
+
+    .feature-content h2 {
+        font-size: 2.5rem;
+    }
+
+
+    .feature-content p {
+        font-size: 1.2rem;
+    }
+
+    .movie-row-section {
+        padding: 2.5rem 3%;
+    }
+
+    .movie-row-section h2 {
+        font-size: 2rem;
+        text-align: center; /* Center movie row title */
+    }
+
+    .movie-cards-container {
+        justify-content: flex-start; /* Ensure horizontal scroll starts from left */
+    }
+
+    .faq-section {
+        padding: 3rem 3%;
+    }
+
+    .faq-section h2 {
+        font-size: 2.2rem;
+    }
+
+    .faq-question {
+        font-size: 1.2rem;
+        padding: 1rem 1.5rem;
+    }
+
+    .faq-question .fa-plus {
+        font-size: 1.2rem;
+    }
+
+    .faq-answer p {
+        font-size: 1rem;
+    }
+
+    .main-footer {
+        padding: 3rem 3%;
+    }
+
+    .footer-links {
+        grid-template-columns: repeat(2, 1fr); /* Two columns for footer links */
+    }
+
+
+}
+
+/* Mobile (max-width: 576px) */
+@media (max-width: 576px) {
+    h1 { font-size: 2.5rem; }
+    h2 { font-size: 1.8rem; }
+    h3 { font-size: 1.4rem; }
+    p { font-size: 0.95rem; }
+
+    .main-header {
+        padding: 1rem 2%;
+    }
+
+    .logo {
+        font-size: 1.8rem;
+    }
+
+    .header-nav {
+        gap: 1rem;
+    }
+
+    .language-selector .lang-display {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.9rem;
+    }
+
+    .btn-primary {
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .hero-section {
+        height: 70vh; /* Even shorter hero for mobile phones */
+    }
+
+    .hero-content {
+        margin-top: 20px; /* Add top border for separation */
+        max-width: 90%;
+    }
+
+    .hero-content h1 {
+        font-size: 1.8rem;
+    }
+
+    .hero-content h3 {
+        font-size: 1.5rem;
+    }
+
+    .hero-content p {
+        font-size: 1rem;
+    }
+
+    .email-signup input[type="email"] {
+        padding: 0.8rem 1rem;
+        font-size: 1rem;
+        min-width: unset; /* Remove min-width for full flexibility */
+        width: 100%; /* Ensure input takes full width when stacked */
+    }
+
+    .btn-hero {
+        font-size: 1rem;
+        padding: 0.6rem 1.2rem;
+        width: 100%; /* Ensure button takes full width when stacked */
+    }
+
+    .feature-section {
+        padding: 2rem 2%;
+        gap: 1.5rem;
+    }
+
+    .feature-content h2 {
+        font-size: 2rem;
+    }
+
+    .feature-content p {
+        font-size: 1.1rem;
+    }
+
+    .movie-row-section {
+        padding: 2rem 2%;
+    }
+
+    .movie-row-section h2 {
+        font-size: 1.8rem;
+    }
+
+    .movie-card {
+        width: 150px; /* Smaller cards for mobile view */
+        height: 225px;
+    }
+
+    .card-overlay h4 {
+        font-size: 1.1rem;
+    }
+
+    .card-overlay p {
+        font-size: 0.8rem;
+    }
+
+    .play-icon {
+        font-size: 2rem;
+    }
+
+    .faq-section {
+        padding: 2rem 2%;
+    }
+
+
+    .faq-section h2 {
+        font-size: 2rem;
+    }
+
+    .faq-question {
+        font-size: 1rem;
+        padding: 0.8rem 1rem;
+    }
+
+    .faq-question .fa-plus {
+        font-size: 1rem;
+    }
+
+    .faq-answer p {
+        font-size: 0.9rem;
+    }
+
+    .main-footer {
+        padding: 2rem 2%;
+    }
+
+    .footer-links {
+        grid-template-columns: 1fr; /* Single column on very small screens */
+    }
+
+    .footer-question, .copyright {
+        font-size: 0.8rem;
+    }
+
+    /* Modal adjustments for small screens */
+    .modal-dialog {
+        padding: 2rem 1.5rem;
+        width: 95%; /* Make modal nearly full width on mobile */
+    }
+
+    .modal-close-btn {
+        font-size: 2rem;
+        top: 10px;
+        right: 15px;
+        
+    }
+    
+    .auth-toggle-btn {
+        font-size: 1rem;
+        padding: 0.6rem;
+    }
+
+    .auth-form h2 {
+        font-size: 1.5rem;
+    }
+
+    .auth-form input {
+        padding: 0.8rem;
+        font-size: 1rem;
+    }
+    
+    .btn-auth-submit {
+        padding: 0.8rem;
+        font-size: 1rem;
+    }
+
+    .form-options, .signup-text, .login-text {
+        font-size: 0.8rem;
+    }
+
+
+
+
+}
+    
+

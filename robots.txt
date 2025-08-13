@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# This is a demo/portfolio project showcasing web development skills
+# Not affiliated with Netflix Inc.
+# Created by Obayi David for educational and demonstration purposes
+
+Disallow: /admin/
+Disallow: /private/
